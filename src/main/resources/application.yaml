@@ -11,3 +11,9 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     changeLog: classpath:changelog-master.xml
+
+springdoc:
+  packagesToScan: br.com.victor.weatherapi
+  pathsToMatch: /*
+  api-docs.path: '/swagger-ui.html'
+

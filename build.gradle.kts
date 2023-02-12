@@ -23,6 +23,8 @@ dependencies {
 	//db
 	implementation("org.liquibase:liquibase-core:4.11.0")
 	implementation("org.postgresql:postgresql:42.5.1")
+	//docs
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
 }
 
 tasks.withType<Test> {
