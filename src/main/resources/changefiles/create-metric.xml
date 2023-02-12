@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet author="jvictorcm" id="12/02/2023:2">
+        <sql stripComments="true" splitStatements="true" endDelimiter="\nGO" dbms="mysql">
+            CREATE TABLE metrics (
+                id SERIAL PRIMARY KEY,
+                sensor_id INTEGER NOT NULL,
+                temperature FLOAT,
+                humidity FLOAT,
+                wind_speed FLOAT,
+                created_at TIMESTAMP NOT NULL DEFAULT NOW()
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
