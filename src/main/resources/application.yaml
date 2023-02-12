@@ -1,0 +1,13 @@
+spring:
+  application:
+    weather-collection-service
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/weatherdb
+    username: user
+    password: user
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    changeLog: classpath:changelog-master.xml
