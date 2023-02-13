@@ -26,7 +26,7 @@ class MetricMapperTest {
         dto.setSensorId("123");
         dto.getMetrics().put("temperature", 72.0);
         dto.getMetrics().put("humidity", 0.65);
-        dto.getMetrics().put("wind_speed", 10.0);
+        dto.getMetrics().put("windSpeed", 10.0);
         Metric metric = MetricMapper.toEntity(dto);
         assertEquals("123", metric.getSensorId());
         assertEquals(72.0, metric.getTemperature(), 0.001);

@@ -18,7 +18,7 @@ public class MetricMapper {
         metric.setSensorId(metricsDto.getSensorId());
         metric.setTemperature(metricsDto.getMetrics().get("temperature"));
         metric.setHumidity(metricsDto.getMetrics().get("humidity"));
-        metric.setWindSpeed(metricsDto.getMetrics().get("wind_speed"));
+        metric.setWindSpeed(metricsDto.getMetrics().get("windSpeed"));
         return metric;
     }
 

@@ -6,10 +6,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
 
     <changeSet author="jvictorcm" id="12/02/2023:2">
-        <sql stripComments="true" splitStatements="true" endDelimiter="\nGO" dbms="mysql">
-            CREATE TABLE metrics (
+        <sql stripComments="true" splitStatements="true" endDelimiter="\nGO">
+            CREATE TABLE metric (
                 id SERIAL PRIMARY KEY,
-                sensor_id INTEGER NOT NULL,
+                sensor_id TEXT NOT NULL,
                 temperature FLOAT,
                 humidity FLOAT,
                 wind_speed FLOAT,

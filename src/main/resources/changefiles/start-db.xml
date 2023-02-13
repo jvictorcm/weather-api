@@ -6,7 +6,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
 
     <changeSet author="jvictorcm" id="12/02/2023:1">
-        <sql stripComments="true" splitStatements="true" endDelimiter="\nGO" dbms="mysql">
+        <sql stripComments="true" splitStatements="true" endDelimiter="\nGO">
             SELECT 1;
         </sql>
     </changeSet>

@@ -2,6 +2,7 @@ package br.com.victor.weatherapi.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
 public class Metric {
@@ -23,7 +24,7 @@ public class Metric {
     private Double windSpeed;
 
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private Timestamp createdAt = Timestamp.from(Instant.now());
 
 
     public Long getId() {

@@ -52,7 +52,7 @@ class MetricServiceTest {
 
     @Test
     public void testGetMetricsAverage() {
-        when(metricRepository.findBySensorIdInAndTimestampBetween(Arrays.asList("1", "2"), null, null))
+        when(metricRepository.findAllBySensorIdInAndCreatedAtBetween(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
         MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "average", null, null);
@@ -65,7 +65,7 @@ class MetricServiceTest {
 
     @Test
     public void testGetMetricsMax() {
-        when(metricRepository.findBySensorIdInAndTimestampBetween(Arrays.asList("1", "2"), null, null))
+        when(metricRepository.findAllBySensorIdInAndCreatedAtBetween(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
         MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "max", null, null);
@@ -78,7 +78,7 @@ class MetricServiceTest {
 
     @Test
     public void testGetMetricsMin() {
-        when(metricRepository.findBySensorIdInAndTimestampBetween(Arrays.asList("1", "2"), null, null))
+        when(metricRepository.findAllBySensorIdInAndCreatedAtBetween(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
         MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "min", null, null);

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Tag(name = "Weather Metrics API", description = "Operations to receive and query weather metrics")
@@ -30,7 +32,7 @@ public interface Controller {
 
     @GetMapping
     public ResponseEntity<MetricsStatisticsDto> getMetrics(@RequestParam(required = false) List<String> sensorIds,
-                                                           @RequestParam List<String> metrics,
+                                                           @RequestParam(defaultValue = "temperature,humidity,windSpeed") List<String> metrics,
                                                            @RequestParam(defaultValue = "average") String statistic,
                                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate);
