@@ -3,3 +3,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/weatherdb
     username: user
     password: user
+  jpa:
+    show-sql: true
