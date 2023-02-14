@@ -8,10 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MetricRepository extends JpaRepository<Metric, Long> {
-    List<Metric> findAllBySensorIdInAndCreatedAtBetween(List<String> sensorIds, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query(
-            value = "SELECT * FROM Metric m WHERE m.status in ?1",
-            nativeQuery = true)
-    List<Metric> findAllBySensorIdIn(List<String> sensorIds);
+    @Query(value = "SELECT * FROM metric m WHERE ((COALESCE(?1) IS NULL OR m.sensor_id in (?1)) AND (cast(?2 as date) IS NULL OR m.created_at >= ?2) AND (cast(?3 as date) IS NULL OR m.created_at <= ?3))", nativeQuery = true)
+    List<Metric> findByParameters(List<String> sensorIds, LocalDateTime startDate, LocalDateTime endDate);
 }

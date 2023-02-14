@@ -26,8 +26,7 @@ public class MetricService {
     }
 
     public MetricsStatisticsDto getMetrics(List<String> sensorIds, List<String> metrics, String statistic, LocalDateTime startDate, LocalDateTime endDate) {
-//        List<Metric> metricsList = metricRepository.findAllBySensorIdInAndCreatedAtBetween(sensorIds, startDate, endDate);
-        List<Metric> metricsList = metricRepository.findAllBySensorIdIn(sensorIds);
+        List<Metric> metricsList = metricRepository.findByParameters(sensorIds, startDate, endDate);
         Map<String, List<Metric>> metricsGroupedBySensorId = metricsList.stream()
                 .collect(Collectors.groupingBy(Metric::getSensorId));
         MetricsStatisticsDto response = new MetricsStatisticsDto();
