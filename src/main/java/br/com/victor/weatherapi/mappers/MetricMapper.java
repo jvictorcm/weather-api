@@ -2,6 +2,8 @@ package br.com.victor.weatherapi.mappers;
 
 import br.com.victor.weatherapi.api.dto.MetricsDto;
 import br.com.victor.weatherapi.model.Metric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class MetricMapper {
 
+    static Logger LOGGER = LoggerFactory.getLogger(MetricMapper.class);
     static List<String> ignoreList = Arrays.asList("id", "createdAt", "sensorId");
 
     public static Metric toEntity(MetricsDto metricsDto) {
@@ -23,6 +26,8 @@ public class MetricMapper {
     }
 
     public static MetricsDto toDto(Metric metric) {
+        LOGGER.debug("Converting MetricEntity to DTO: {}", metric);
+        long startTime = System.currentTimeMillis();
         MetricsDto metricsDto = new MetricsDto();
         metricsDto.setSensorId(metric.getSensorId());
         ArrayList<Field> fieldList = new ArrayList<>(Arrays.stream(metric.getClass().getDeclaredFields()).collect(Collectors.toList()));
@@ -37,6 +42,8 @@ public class MetricMapper {
                 throw new RuntimeException("Could not access field: " + field.getName(), ex);
             }
         }
+        long responseTime = System.currentTimeMillis() - startTime;
+        LOGGER.debug("Finished conversion of MetricEntity to DTO: {}", responseTime);
         return metricsDto;
     }
 }

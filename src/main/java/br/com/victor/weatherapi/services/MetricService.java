@@ -5,16 +5,24 @@ import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
 import br.com.victor.weatherapi.mappers.MetricMapper;
 import br.com.victor.weatherapi.model.Metric;
 import br.com.victor.weatherapi.repositories.MetricRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class MetricService {
+
+    Logger LOGGER = LoggerFactory.getLogger(MetricService.class);
+
     @Autowired
     MetricRepository metricRepository;
 

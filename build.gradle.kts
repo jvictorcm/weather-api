@@ -1,3 +1,4 @@
+extra["springCloudVersion"] = "2021.0.3"
 plugins {
     java
     id("org.springframework.boot") version "2.7.8"
@@ -24,10 +25,19 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.1")
     //docs
     implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
-
+    //logging
+    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation("ch.qos.logback:logback-core:1.2.11")
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     //test
     testCompileOnly("junit:junit:4.13")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
 }
 
 tasks.withType<Test> {

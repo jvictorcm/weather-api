@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+    <springProperty name="application-name" source="spring.application.name"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) app="${application-name}", traceId=%X{traceId:-}, spanId=%X{spanId:-}, t=%thread, class=%logger{50}, %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="br.com.victor.weatherapi" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="org.springframework" level="WARN"/>
+<!--    <logger name="io.micrometer.newrelic.NewRelicMeterRegistry" level="WARN"/>-->
+
+</configuration>
