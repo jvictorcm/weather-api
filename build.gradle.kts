@@ -4,11 +4,15 @@ plugins {
     id("org.springframework.boot") version "2.7.8"
     id("io.spring.dependency-management") version "1.1.0"
     jacoco
+    application
 }
 
 group = "br.com.victor"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 repositories {
     mavenCentral()
@@ -32,6 +36,9 @@ dependencies {
     //test
     testCompileOnly("junit:junit:4.13")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
+    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
+    testImplementation("org.testcontainers:postgresql:1.17.6")
 }
 
 dependencyManagement {
@@ -69,3 +76,22 @@ tasks.jacocoTestReport {
 jacoco {
     toolVersion = "0.8.8"
 }
+
+sourceSets.create("integrationTest") {
+    java.srcDir("src/integrationTest/java")
+    resources.srcDir("src/integrationTest/resources")
+
+    compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+    runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+}
+
+configurations["integrationTestCompile"].extendsFrom(configurations.testImplementation.get())
+configurations["integrationTestRuntime"].extendsFrom(configurations.implementation.get())
+configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+tasks.create<Test>("integrationTest") {
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath + sourceSets["integrationTest"].compileClasspath
+}
+
+tasks["test"].finalizedBy("integrationTest")
