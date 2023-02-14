@@ -37,6 +37,7 @@ dependencies {
     testCompileOnly("junit:junit:4.13")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
+    testImplementation("io.rest-assured:json-schema-validator:5.1.1")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     testImplementation("org.testcontainers:postgresql:1.17.6")
 }
