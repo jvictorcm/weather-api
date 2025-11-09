@@ -1,8 +1,10 @@
 package br.com.victor.weatherapi.api.impl;
 
 import br.com.victor.weatherapi.api.Controller;
-import br.com.victor.weatherapi.api.dto.MetricsDto;
+import br.com.victor.weatherapi.api.dto.WeatherMetricDto;
 import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
+import br.com.victor.weatherapi.api.enums.MetricType;
+import br.com.victor.weatherapi.api.enums.StatisticType;
 import br.com.victor.weatherapi.services.MetricService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,23 +17,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-public class WeatherController implements Controller {
+public class WeatherMetricController implements Controller {
 
-    Logger LOGGER = LoggerFactory.getLogger(WeatherController.class);
+    Logger LOGGER = LoggerFactory.getLogger(WeatherMetricController.class);
 
     @Autowired
     MetricService metricService;
 
     @Override
-    public ResponseEntity<MetricsDto> addMetric(MetricsDto metric) {
+    public ResponseEntity<WeatherMetricDto> createMetric(WeatherMetricDto metric) {
         LOGGER.info("Received request to create metric for sensor id: {}", metric.getSensorId());
-        MetricsDto result = metricService.addMetric(metric);
+        WeatherMetricDto result = metricService.addMetric(metric);
         LOGGER.info("Successfully created metric for sensor id: {}", result.getSensorId());
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<MetricsStatisticsDto> getMetrics(List<String> sensorIds, List<String> metrics, String statistic, LocalDateTime startDate, LocalDateTime endDate) {
+    public ResponseEntity<MetricsStatisticsDto> getMetrics(List<String> sensorIds, List<MetricType> metrics, StatisticType statistic, LocalDateTime startDate, LocalDateTime endDate) {
         LOGGER.info("Received GET /metrics request with parameters: sensorIds={}, metrics={}, statistic={}, startDate={}, endDate={}",
                 sensorIds, metrics, statistic, startDate, endDate);
         long startTime = System.currentTimeMillis();

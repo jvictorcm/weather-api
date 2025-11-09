@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface MetricRepository extends JpaRepository<Metric, Long> {
 
-    @Query(value = "SELECT * FROM metric m WHERE ((COALESCE(?1) IS NULL OR m.sensor_id in (?1)) AND (cast(?2 as date) IS NULL OR m.created_at >= ?2) AND (cast(?3 as date) IS NULL OR m.created_at <= ?3))", nativeQuery = true)
+    @Query(value = "SELECT * FROM metric m WHERE " +
+            "((?1 IS NULL OR m.sensor_id IN (?1)) AND " +
+            "(cast(?2 as timestamp) IS NULL OR m.created_at >= ?2) AND " +
+            "(cast(?3 as timestamp) IS NULL OR m.created_at <= ?3))", nativeQuery = true)
     List<Metric> findByParameters(List<String> sensorIds, LocalDateTime startDate, LocalDateTime endDate);
 }

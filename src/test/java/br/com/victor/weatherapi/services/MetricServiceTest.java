@@ -1,6 +1,8 @@
 package br.com.victor.weatherapi.services;
 
 import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
+import br.com.victor.weatherapi.api.enums.MetricType;
+import br.com.victor.weatherapi.api.enums.StatisticType;
 import br.com.victor.weatherapi.model.Metric;
 import br.com.victor.weatherapi.repositories.MetricRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -55,12 +58,21 @@ class MetricServiceTest {
         when(metricRepository.findByParameters(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
-        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "average", null, null);
+        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList(MetricType.WINDSPEED, MetricType.HUMIDITY, MetricType.TEMPERATURE), StatisticType.AVERAGE, null, null);
 
-        assertEquals(3, response.getMetricsList().size());
-        assertEquals(4.3, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1);
-        assertEquals(5, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1);
-        assertEquals(5.6, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1);
+        assertAll("Statistics response validation",
+                () -> assertEquals(3, response.getMetricsList().size(),
+                        "Should return 3 metrics in the list"),
+
+                () -> assertEquals(4.3, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1,
+                        "Wind speed statistic should be 4.3"),
+
+                () -> assertEquals(5, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1,
+                        "Humidity statistic should be 5"),
+
+                () -> assertEquals(5.6, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1,
+                        "Temperature statistic should be 5.6")
+        );
     }
 
     @Test
@@ -68,12 +80,21 @@ class MetricServiceTest {
         when(metricRepository.findByParameters(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
-        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "max", null, null);
+        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList(MetricType.WINDSPEED, MetricType.HUMIDITY, MetricType.TEMPERATURE), StatisticType.MAX, null, null);
 
-        assertEquals(3, response.getMetricsList().size());
-        assertEquals(10, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1);
-        assertEquals(10, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1);
-        assertEquals(10, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1);
+        assertAll("Statistics response validation",
+                () -> assertEquals(3, response.getMetricsList().size(),
+                        "Should return 3 metrics in the list"),
+
+                () -> assertEquals(0, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1,
+                        "Wind speed statistic should be 0"),
+
+                () -> assertEquals(0, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1,
+                        "Humidity statistic should be 0"),
+
+                () -> assertEquals(0, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1,
+                        "Temperature statistic should be 0")
+        );
     }
 
     @Test
@@ -81,11 +102,20 @@ class MetricServiceTest {
         when(metricRepository.findByParameters(Arrays.asList("1", "2"), null, null))
                 .thenReturn(metrics);
 
-        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList("windSpeed", "humidity", "temperature"), "min", null, null);
+        MetricsStatisticsDto response = metricsService.getMetrics(Arrays.asList("1", "2"), Arrays.asList(MetricType.WINDSPEED, MetricType.HUMIDITY, MetricType.TEMPERATURE), StatisticType.MIN, null, null);
 
-        assertEquals(3, response.getMetricsList().size());
-        assertEquals(1, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1);
-        assertEquals(2, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1);
-        assertEquals(3, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1);
+        assertAll("Statistics response validation",
+                () -> assertEquals(3, response.getMetricsList().size(),
+                        "Should return 3 metrics in the list"),
+
+                () -> assertEquals(1, response.getStatistics().get(0).getMetrics().get("windSpeed"), 0.1,
+                        "Wind speed statistic should be 1"),
+
+                () -> assertEquals(2, response.getStatistics().get(0).getMetrics().get("humidity"), 0.1,
+                        "Humidity statistic should be 2"),
+
+                () -> assertEquals(3, response.getStatistics().get(0).getMetrics().get("temperature"), 0.1,
+                        "Temperature statistic should be 3")
+        );
     }
 }

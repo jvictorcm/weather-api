@@ -1,7 +1,9 @@
 package br.com.victor.weatherapi.services;
 
-import br.com.victor.weatherapi.api.dto.MetricsDto;
+import br.com.victor.weatherapi.api.dto.WeatherMetricDto;
 import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
+import br.com.victor.weatherapi.api.enums.MetricType;
+import br.com.victor.weatherapi.api.enums.StatisticType;
 import br.com.victor.weatherapi.mappers.MetricMapper;
 import br.com.victor.weatherapi.model.Metric;
 import br.com.victor.weatherapi.repositories.MetricRepository;
@@ -27,30 +29,30 @@ public class MetricService {
     MetricRepository metricRepository;
 
 
-    public MetricsDto addMetric(MetricsDto metric) {
+    public WeatherMetricDto addMetric(WeatherMetricDto metric) {
         Metric newMetric = MetricMapper.toEntity(metric);
         Metric savedMetric = metricRepository.save(newMetric);
         return MetricMapper.toDto(savedMetric);
     }
 
-    public MetricsStatisticsDto getMetrics(List<String> sensorIds, List<String> metrics, String statistic, LocalDateTime startDate, LocalDateTime endDate) {
+    public MetricsStatisticsDto getMetrics(List<String> sensorIds, List<MetricType> metrics, StatisticType statistic, LocalDateTime startDate, LocalDateTime endDate) {
         List<Metric> metricsList = metricRepository.findByParameters(sensorIds, startDate, endDate);
         Map<String, List<Metric>> metricsGroupedBySensorId = metricsList.stream()
                 .collect(Collectors.groupingBy(Metric::getSensorId));
         MetricsStatisticsDto response = new MetricsStatisticsDto();
-        ArrayList<MetricsDto> statisticList = new ArrayList<>();
+        ArrayList<WeatherMetricDto> statisticList = new ArrayList<>();
         for (Map.Entry<String, List<Metric>> entry : metricsGroupedBySensorId.entrySet()) {
-            Map<String, Double> sensorMetrics = new HashMap<>();
-            for (String metric : metrics) {
+            Map<MetricType, Double> sensorMetrics = new HashMap<>();
+            for (MetricType metric : metrics) {
                 double metricValue = 0;
                 switch (statistic) {
-                    case "average":
+                    case AVERAGE:
                         metricValue = getAverageStatistic(entry, metric);
                         break;
-                    case "max":
+                    case MAX:
                         metricValue = getMaxStatistic(entry, metric);
                         break;
-                    case "min":
+                    case MIN:
                         metricValue = getMinStatistic(entry, metric);
                         break;
                 }
@@ -63,19 +65,19 @@ public class MetricService {
         return response;
     }
 
-    private MetricsDto compileStaticsIntoDto(Map<String, Double> sensorMetrics, String key) {
-        MetricsDto resultMetric = new MetricsDto();
+    private WeatherMetricDto compileStaticsIntoDto(Map<MetricType, Double> sensorMetrics, String key) {
+        WeatherMetricDto resultMetric = new WeatherMetricDto();
         resultMetric.setSensorId(key);
         resultMetric.getMetrics().putAll(sensorMetrics);
         return resultMetric;
     }
 
-    private static double getMinStatistic(Map.Entry<String, List<Metric>> entry, String metric) {
+    private static double getMinStatistic(Map.Entry<String, List<Metric>> entry, MetricType metric) {
         double metricValue;
         metricValue = entry.getValue().stream()
                 .mapToDouble(x -> {
                     try {
-                        Field field = x.getClass().getDeclaredField(metric);
+                        Field field = x.getClass().getDeclaredField(metric.getValue());
                         field.setAccessible(true);
                         return (double) field.get(x);
                     } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -86,12 +88,12 @@ public class MetricService {
         return metricValue;
     }
 
-    private static double getMaxStatistic(Map.Entry<String, List<Metric>> entry, String metric) {
+    private static double getMaxStatistic(Map.Entry<String, List<Metric>> entry, MetricType metric) {
         double metricValue;
         metricValue = entry.getValue().stream()
                 .mapToDouble(x -> {
                     try {
-                        Field field = x.getClass().getDeclaredField(metric);
+                        Field field = x.getClass().getDeclaredField(metric.getValue());
                         field.setAccessible(true);
                         return (double) field.get(x);
                     } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -102,12 +104,12 @@ public class MetricService {
         return metricValue;
     }
 
-    private static double getAverageStatistic(Map.Entry<String, List<Metric>> entry, String metric) {
+    private static double getAverageStatistic(Map.Entry<String, List<Metric>> entry, MetricType metric) {
         double metricValue;
         metricValue = entry.getValue().stream()
                 .mapToDouble(x -> {
                     try {
-                        Field field = x.getClass().getDeclaredField(metric);
+                        Field field = x.getClass().getDeclaredField(metric.getValue());
                         field.setAccessible(true);
                         return (double) field.get(x);
                     } catch (NoSuchFieldException | IllegalAccessException e) {

@@ -1,6 +1,7 @@
 package br.com.victor.weatherapi.mappers;
 
-import br.com.victor.weatherapi.api.dto.MetricsDto;
+import br.com.victor.weatherapi.api.dto.WeatherMetricDto;
+import br.com.victor.weatherapi.api.enums.MetricType;
 import br.com.victor.weatherapi.model.Metric;
 import org.junit.jupiter.api.Test;
 
@@ -14,19 +15,19 @@ class MetricMapperTest {
         metric.setSensorId("1");
         metric.setTemperature(10.5);
         metric.setHumidity(10.0);
-        MetricsDto metricsDto = MetricMapper.toDto(metric);
-        assertEquals("1", metricsDto.getSensorId());
-        assertEquals(10.5, metricsDto.getMetrics().get("temperature"), 0.0);
-        assertEquals(10.0, metricsDto.getMetrics().get("humidity"), 0.0);
+        WeatherMetricDto weatherMetricDto = MetricMapper.toDto(metric);
+        assertEquals("1", weatherMetricDto.getSensorId());
+        assertEquals(10.5, weatherMetricDto.getMetrics().get(MetricType.TEMPERATURE), 0.0);
+        assertEquals(10.0, weatherMetricDto.getMetrics().get(MetricType.HUMIDITY), 0.0);
     }
 
     @Test
     public void testToEntity() {
-        MetricsDto dto = new MetricsDto();
+        WeatherMetricDto dto = new WeatherMetricDto();
         dto.setSensorId("123");
-        dto.getMetrics().put("temperature", 72.0);
-        dto.getMetrics().put("humidity", 0.65);
-        dto.getMetrics().put("windSpeed", 10.0);
+        dto.getMetrics().put(MetricType.TEMPERATURE, 72.0);
+        dto.getMetrics().put(MetricType.HUMIDITY, 0.65);
+        dto.getMetrics().put(MetricType.WINDSPEED, 10.0);
         Metric metric = MetricMapper.toEntity(dto);
         assertEquals("123", metric.getSensorId());
         assertEquals(72.0, metric.getTemperature(), 0.001);
@@ -36,10 +37,10 @@ class MetricMapperTest {
 
     @Test
     public void testToEntityWithMissingMetrics() {
-        MetricsDto dto = new MetricsDto();
+        WeatherMetricDto dto = new WeatherMetricDto();
         dto.setSensorId("123");
-        dto.getMetrics().put("temperature", 72.0);
-        dto.getMetrics().put("humidity", 0.65);
+        dto.getMetrics().put(MetricType.TEMPERATURE, 72.0);
+        dto.getMetrics().put(MetricType.HUMIDITY, 0.65);
         Metric metric = MetricMapper.toEntity(dto);
         assertEquals("123", metric.getSensorId());
         assertEquals(72.0, metric.getTemperature(), 0.001);
