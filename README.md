@@ -4,7 +4,8 @@ This project is a Spring Boot application that can be run using the provided Doc
 
 ## Requirements
 
-- JDK 11
+- JDK 17
+- gradle 7.6.4
 - Docker
 - Docker Compose
 
