@@ -1,4 +1,5 @@
 extra["springCloudVersion"] = "2021.0.3"
+
 plugins {
     java
     id("org.springframework.boot") version "2.7.8"
@@ -9,9 +10,10 @@ plugins {
 
 group = "br.com.victor"
 version = "0.0.1-SNAPSHOT"
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -34,7 +36,7 @@ dependencies {
     implementation("ch.qos.logback:logback-core:1.2.11")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     //test
-    testCompileOnly("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
     testImplementation("io.rest-assured:json-schema-validator:5.1.1")
@@ -53,7 +55,6 @@ tasks.withType<Test> {
 }
 
 tasks.test {
-    useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
     }
@@ -63,14 +64,15 @@ tasks.test {
         println("file://$buildDir/reports/jacoco/test/html/index.html")
     }
 }
+
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     classDirectories.setFrom(
-            files(classDirectories.files.map {
-                fileTree(it) {
-                    exclude("*/config/*", "*/model/*", "/exceptions/*")
-                }
-            })
+        files(classDirectories.files.map {
+            fileTree(it) {
+                exclude("*/config/*", "*/model/*", "/exceptions/*")
+            }
+        })
     )
 }
 
@@ -78,7 +80,7 @@ jacoco {
     toolVersion = "0.8.8"
 }
 
-sourceSets.create("integrationTest") {
+val integrationTest = sourceSets.create("integrationTest") {
     java.srcDir("src/integrationTest/java")
     resources.srcDir("src/integrationTest/resources")
 
@@ -86,13 +88,17 @@ sourceSets.create("integrationTest") {
     runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
 }
 
-configurations["integrationTestCompile"].extendsFrom(configurations.testImplementation.get())
-configurations["integrationTestRuntime"].extendsFrom(configurations.implementation.get())
+configurations["integrationTestImplementation"].extendsFrom(configurations.testImplementation.get())
 configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
-tasks.create<Test>("integrationTest") {
-    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-    classpath = sourceSets["integrationTest"].runtimeClasspath + sourceSets["integrationTest"].compileClasspath
+val integrationTestTask = tasks.register<Test>("integrationTest") {
+    description = "Runs integration tests."
+    group = "verification"
+
+    testClassesDirs = integrationTest.output.classesDirs
+    classpath = integrationTest.runtimeClasspath
 }
 
-tasks["test"].finalizedBy("integrationTest")
+tasks.named<ProcessResources>("processIntegrationTestResources") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

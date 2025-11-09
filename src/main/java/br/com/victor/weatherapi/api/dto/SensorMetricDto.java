@@ -4,16 +4,11 @@ import br.com.victor.weatherapi.api.enums.MetricType;
 
 import java.util.HashMap;
 
-public class WeatherMetricDto {
+public class SensorMetricDto {
     private String sensorId;
     private HashMap<MetricType, Double> metrics;
 
-    public WeatherMetricDto(String sensorId, HashMap<MetricType, Double> metrics) {
-        this.sensorId = sensorId;
-        this.metrics = metrics;
-    }
-
-    public WeatherMetricDto() {
+    public SensorMetricDto() {
         this.metrics = new HashMap<>();
     }
 

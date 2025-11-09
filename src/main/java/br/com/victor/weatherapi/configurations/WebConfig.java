@@ -1,4 +1,4 @@
-package br.com.victor.weatherapi.configuration;
+package br.com.victor.weatherapi.configurations;
 
 import br.com.victor.weatherapi.api.enums.StringToMetricTypeConverter;
 import br.com.victor.weatherapi.api.enums.StringToStatisticTypeConverter;

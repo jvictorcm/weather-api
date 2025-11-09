@@ -1,8 +1,8 @@
 package br.com.victor.weatherapi.mappers;
 
-import br.com.victor.weatherapi.api.dto.WeatherMetricDto;
+import br.com.victor.weatherapi.api.dto.SensorMetricDto;
 import br.com.victor.weatherapi.api.enums.MetricType;
-import br.com.victor.weatherapi.model.Metric;
+import br.com.victor.weatherapi.model.SensorMetric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,34 +17,34 @@ public class MetricMapper {
     static Logger LOGGER = LoggerFactory.getLogger(MetricMapper.class);
     static List<String> ignoreList = Arrays.asList("id", "createdAt", "sensorId");
 
-    public static Metric toEntity(WeatherMetricDto weatherMetricDto) {
-        Metric metric = new Metric();
-        metric.setSensorId(weatherMetricDto.getSensorId());
-        metric.setTemperature(weatherMetricDto.getMetrics().get(MetricType.TEMPERATURE));
-        metric.setHumidity(weatherMetricDto.getMetrics().get(MetricType.HUMIDITY));
-        metric.setWindSpeed(weatherMetricDto.getMetrics().get(MetricType.WINDSPEED));
-        return metric;
+    public static SensorMetric toEntity(SensorMetricDto sensorMetricDto) {
+        SensorMetric sensorMetric = new SensorMetric();
+        sensorMetric.setSensorId(sensorMetricDto.getSensorId());
+        sensorMetric.setTemperature(sensorMetricDto.getMetrics().get(MetricType.TEMPERATURE));
+        sensorMetric.setHumidity(sensorMetricDto.getMetrics().get(MetricType.HUMIDITY));
+        sensorMetric.setWindSpeed(sensorMetricDto.getMetrics().get(MetricType.WINDSPEED));
+        return sensorMetric;
     }
 
-    public static WeatherMetricDto toDto(Metric metric) {
-        LOGGER.debug("Converting MetricEntity to DTO: {}", metric);
+    public static SensorMetricDto toDto(SensorMetric sensorMetric) {
+        LOGGER.debug("Converting MetricEntity to DTO: {}", sensorMetric);
         long startTime = System.currentTimeMillis();
-        WeatherMetricDto weatherMetricDto = new WeatherMetricDto();
-        weatherMetricDto.setSensorId(metric.getSensorId());
-        ArrayList<Field> fieldList = new ArrayList<>(Arrays.stream(metric.getClass().getDeclaredFields()).collect(Collectors.toList()));
+        SensorMetricDto sensorMetricDto = new SensorMetricDto();
+        sensorMetricDto.setSensorId(sensorMetric.getSensorId());
+        ArrayList<Field> fieldList = new ArrayList<>(Arrays.stream(sensorMetric.getClass().getDeclaredFields()).collect(Collectors.toList()));
         fieldList.removeIf(x -> ignoreList.contains(x.getName()));
         for (Field field : fieldList) {
             field.setAccessible(true);
             try {
-                Object fieldValue = field.get(metric);
+                Object fieldValue = field.get(sensorMetric);
                 if (fieldValue != null)
-                    weatherMetricDto.getMetrics().put(MetricType.valueOf(field.getName()), (double) fieldValue);
+                    sensorMetricDto.getMetrics().put(MetricType.fromValue(field.getName()), (double) fieldValue);
             } catch (IllegalAccessException ex) {
                 throw new RuntimeException("Could not access field: " + field.getName(), ex);
             }
         }
         long responseTime = System.currentTimeMillis() - startTime;
         LOGGER.debug("Finished conversion of MetricEntity to DTO: {}", responseTime);
-        return weatherMetricDto;
+        return sensorMetricDto;
     }
 }

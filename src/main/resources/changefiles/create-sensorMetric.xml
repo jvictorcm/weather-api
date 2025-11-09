@@ -7,7 +7,7 @@
 
     <changeSet author="jvictorcm" id="12/02/2023:2">
         <sql stripComments="true" splitStatements="true" endDelimiter="\nGO">
-            CREATE TABLE metric (
+            CREATE TABLE sensor_metric (
                 id SERIAL PRIMARY KEY,
                 sensor_id TEXT NOT NULL,
                 temperature FLOAT,

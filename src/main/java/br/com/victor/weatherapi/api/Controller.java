@@ -1,7 +1,7 @@
 package br.com.victor.weatherapi.api;
 
 
-import br.com.victor.weatherapi.api.dto.WeatherMetricDto;
+import br.com.victor.weatherapi.api.dto.SensorMetricDto;
 import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
 import br.com.victor.weatherapi.api.enums.MetricType;
 import br.com.victor.weatherapi.api.enums.StatisticType;
@@ -26,11 +26,11 @@ public interface Controller {
     @PostMapping
     @Operation(summary = "Add a new metric", responses = {
             @ApiResponse(
-                    responseCode = "201", description = "Created", content = @Content(schema = @Schema(implementation = WeatherMetricDto.class))),
+                    responseCode = "201", description = "Created", content = @Content(schema = @Schema(implementation = SensorMetricDto.class))),
             @ApiResponse(
                     responseCode = "400", description = "Bad Request"
             )})
-    public ResponseEntity<WeatherMetricDto> createMetric(@RequestBody WeatherMetricDto metric) throws IllegalAccessException;
+    public ResponseEntity<SensorMetricDto> createMetric(@RequestBody SensorMetricDto metric) throws IllegalAccessException;
 
     @GetMapping
     @Operation(summary = "Get metrics with statistics", responses = {
