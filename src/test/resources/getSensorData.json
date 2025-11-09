@@ -1,0 +1,27 @@
+{
+  "metricsList": [
+    {
+      "sensorId": "test",
+      "metrics": {
+        "temperature": 11,
+        "windSpeed": 10
+      }
+    },
+    {
+      "sensorId": "test",
+      "metrics": {
+        "temperature": 20,
+        "windSpeed": 21
+      }
+    }
+  ],
+  "statistics": [
+    {
+      "sensorId": "test",
+      "metrics": {
+        "temperature": 20,
+        "windSpeed": 21
+      }
+    }
+  ]
+}

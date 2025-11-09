@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface MetricRepository extends JpaRepository<SensorMetric, Long> {
+public interface SensorMetricRepository extends JpaRepository<SensorMetric, Long> {
 
     @Query(value = "SELECT * FROM metric m WHERE " +
             "((?1 IS NULL OR m.sensor_id IN (?1)) AND " +

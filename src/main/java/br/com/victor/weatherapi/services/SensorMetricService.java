@@ -6,7 +6,7 @@ import br.com.victor.weatherapi.api.enums.MetricType;
 import br.com.victor.weatherapi.api.enums.StatisticType;
 import br.com.victor.weatherapi.mappers.MetricMapper;
 import br.com.victor.weatherapi.model.SensorMetric;
-import br.com.victor.weatherapi.repositories.MetricRepository;
+import br.com.victor.weatherapi.repositories.SensorMetricRepository;
 import br.com.victor.weatherapi.utils.MetricGrouper;
 import br.com.victor.weatherapi.utils.StatisticsCalculator;
 import org.slf4j.Logger;
@@ -22,11 +22,11 @@ import java.util.stream.Stream;
 public class SensorMetricService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SensorMetricService.class);
 
-    private final MetricRepository metricRepository;
+    private final SensorMetricRepository metricRepository;
     private StatisticsCalculator statisticsCalculator;
     private MetricGrouper metricGrouper;
 
-    public SensorMetricService(MetricRepository metricRepository) {
+    public SensorMetricService(SensorMetricRepository metricRepository) {
         this.metricRepository = metricRepository;
         this.statisticsCalculator = new StatisticsCalculator();
         this.metricGrouper = new MetricGrouper();

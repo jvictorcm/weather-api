@@ -4,7 +4,7 @@ import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
 import br.com.victor.weatherapi.api.enums.MetricType;
 import br.com.victor.weatherapi.api.enums.StatisticType;
 import br.com.victor.weatherapi.model.SensorMetric;
-import br.com.victor.weatherapi.repositories.MetricRepository;
+import br.com.victor.weatherapi.repositories.SensorMetricRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ class WeatherSensorMetricServiceTest {
     private SensorMetricService metricsService;
 
     @Mock
-    private MetricRepository metricRepository;
+    private SensorMetricRepository metricRepository;
 
 
     private static List<SensorMetric> sensorMetrics;

@@ -42,6 +42,7 @@ dependencies {
     testImplementation("io.rest-assured:json-schema-validator:5.1.1")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     testImplementation("org.testcontainers:postgresql:1.17.6")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
 dependencyManagement {
@@ -52,6 +53,20 @@ dependencyManagement {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        events = setOf(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
+        )
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+    }
 }
 
 tasks.test {
