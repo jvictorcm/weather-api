@@ -81,10 +81,6 @@ public class SensorMetricService {
         });
         List<SensorMetricDto> results = resultStream.collect(Collectors.toList());
         return results;
-
-//        return metricGrouper.groupBySensorId(sensorMetrics).entrySet().stream()
-//                .map(entry -> calculateSensorStatistics(entry.getKey(), entry.getValue(), metricTypes, statistic))
-//                .collect(Collectors.toList());
     }
 
     private SensorMetricDto calculateSensorStatistics(String sensorId,

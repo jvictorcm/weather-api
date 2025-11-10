@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class MetricGrouper {
 
     public static Map<String, List<SensorMetric>> groupBySensorId(List<SensorMetric> sensorMetrics) {
-        System.out.println("test");
         return sensorMetrics.stream()
                 .collect(Collectors.groupingBy(SensorMetric::getSensorId));
     }

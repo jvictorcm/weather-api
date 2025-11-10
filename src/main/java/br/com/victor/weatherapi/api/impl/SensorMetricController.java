@@ -5,6 +5,8 @@ import br.com.victor.weatherapi.api.dto.SensorMetricDto;
 import br.com.victor.weatherapi.api.dto.MetricsStatisticsDto;
 import br.com.victor.weatherapi.api.enums.MetricType;
 import br.com.victor.weatherapi.api.enums.StatisticType;
+import br.com.victor.weatherapi.api.validation.CreateSensorMetricValidationChain;
+import br.com.victor.weatherapi.api.validation.ValidationResult;
 import br.com.victor.weatherapi.services.SensorMetricService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,16 @@ public class SensorMetricController implements Controller {
     @Autowired
     SensorMetricService sensorMetricService;
 
+    @Autowired
+    CreateSensorMetricValidationChain validationChain;
+
     @Override
     public ResponseEntity<SensorMetricDto> createMetric(SensorMetricDto metric) {
         LOGGER.info("Received request to create metric for sensor id: {}", metric.getSensorId());
+        ValidationResult validationResult = validationChain.validate(metric);
+        if (!validationResult.isValid()) {
+            //throw exception to be caught by a global exception handler
+        }
         SensorMetricDto result = sensorMetricService.addMetric(metric);
         LOGGER.info("Successfully created metric for sensor id: {}", result.getSensorId());
         return new ResponseEntity<>(result, HttpStatus.CREATED);
