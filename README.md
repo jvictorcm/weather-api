@@ -4,7 +4,8 @@ This project is a Spring Boot application that can be run using the provided Doc
 
 ## Requirements
 
-- JDK 11
+- JDK 17
+- gradle 7.6.4
 - Docker
 - Docker Compose
 
@@ -22,24 +23,22 @@ To run the application using Docker Compose, follow these steps:
 
 ## Test Coverage
 * This project includes unit tests and generates Jacoco test coverage reports at ```build/reports/jacoco/test/html/index.html```
-* This project includes integrationTests to validate schemas.
-* There's a dependency between Unit and Integration tests to be always ran in the building process.
+* This project includes integrationTests.
+* ```gradlew clean test integrationTest```
 
 ## Functionality
 * This project has two endpoints.
-  * POST to create the metric for a sensor (the way it was meant to be created, giving flexibility to the evolution of this domain)
-  * GET to get metrics where you can choose what kind of metrics (average, max or min) to a given(or not) set of sensors and to a given(or not) range of dates (that work with either start date or end date)
+  * POST to create the sensorMetric for a sensor
+  * GET to get sensorMetrics where you can choose what kind of sensorMetrics (average, max or min) to a given set of sensors and to a given(or not) range of dates (that work with either start date or end date)
 * This project feature traceId and spanId to easy debugging process in production in cluster environments.
 * Has capability to get Spring Profiles as is created a dev profile at [application-dev.yaml](src/main/resources/application-dev.yaml) 
-## To Evolve this project
-* Refactor the application name
-* Increase Swagger Docs
-* Add a new statistic for SUM values of the queried sensors (missed this one, sorry)
-* Proper Input Validation(validation layer to be used in the service layer)
+
+## Next Steps for this Project
+* Refactor to better namings
+* Improve Swagger Docs
+* Proper Input Validation(validation layer)
 * Proper Exception Handling (using ResponseEntityExceptionHandler) to handle specific exceptions created, for example, to do not allow negative wind speed or out of the range for the temperature and return with valid response codes and body.
 * Create Dockerfile
 * Create docker-compose file with the application building within
-* Add newrelic metrics to collect relevant information such as most required sensor data for the purpose of measure future caching features.
-* Transition this into an Event Driven + CQRS architecture given the complexity of querying all data, moving the GET endpoint to a reactive service. The way that the model has been created and the interface from the client, was meant to facilitate this process.
-* Increase Integration Test coverage
+* Add newrelic sensorMetrics to collect relevant information such as most required sensor data for the purpose of measure future caching features.
 * Have fun! :)

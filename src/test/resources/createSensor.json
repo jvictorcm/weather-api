@@ -1,0 +1,6 @@
+{
+  "sensorId": "test",
+  "metrics": {
+    "temperature": 20, "windSpeed": 21, "humidity": 10
+  }
+}

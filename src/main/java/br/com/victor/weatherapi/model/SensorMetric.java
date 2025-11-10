@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
-public class Metric {
+public class SensorMetric {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
